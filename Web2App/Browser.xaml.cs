@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,17 +21,26 @@ namespace Web2App
     public partial class Browser : Window
     {
         private Uri _uri;
+        private readonly bool isMobileView;
 
-        public Browser(Uri uri)
+        public Browser(Uri uri, bool isMobileView)
         {
             InitializeComponent();
             _uri = uri ?? throw new ArgumentNullException(nameof(uri));
+            this.isMobileView = isMobileView;
             Loaded += Browser_Loaded;
         }
 
         private void Browser_Loaded(object sender, RoutedEventArgs e)
         {
-            bro.Navigate(_uri);
+            if (isMobileView)
+            {
+                bro.Navigate(_uri, new HttpMethod("GET"), string.Empty, new Dictionary<string, string> { { "User-Agent", "Mozilla/5.0 (Linux; Android 7.0; SM-G930V Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36" } });
+            }
+            else
+            {
+                bro.Navigate(_uri);
+            }
         }
     }
 }

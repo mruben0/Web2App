@@ -17,7 +17,8 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Url}"></TextBlock>
-                            <Button Tag="{Binding Url}"  Click="LunchApp_Click">Launch</Button>
+                            <Button Tag="{Binding Url}"  Click="Launch_Desktop">Launch</Button>
+                            <Button Tag="{Binding Url}"  Click="Launch_Mobile">Launch As Mobile</Button>
                             <Button>Create shortcut</Button>
                             <Button>Delete</Button>
                         </StackPanel>

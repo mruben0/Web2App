@@ -38,7 +38,7 @@ namespace Web2App
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var uri = new Uri(UriBox.Text);
-            var browserWindow = new Browser(uri);
+            var browserWindow = new Browser(uri,false);
             browserWindow.Show();
         }
 
@@ -48,10 +48,17 @@ namespace Web2App
             Apps.ItemsSource = _dataSerice.Get();
         }
 
-        private void LunchApp_Click(object sender, RoutedEventArgs e)
+        private void Launch_Desktop(object sender, RoutedEventArgs e)
         {
             var uri = (sender as Button).Tag as Uri;
-            var browserWindow = new Browser(uri);
+            var browserWindow = new Browser(uri, false);
+            browserWindow.Show();
+        }
+
+        private void Launch_Mobile(object sender, RoutedEventArgs e)
+        {
+            var uri = (sender as Button).Tag as Uri;
+            var browserWindow = new Browser(uri,true);
             browserWindow.Show();
         }
     }

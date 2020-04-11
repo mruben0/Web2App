@@ -4,19 +4,21 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Newtonsoft.Json;
 
 namespace Web2App
 {
     public class WebAppDataService
     {
-        private readonly string _path = @"C:\Users\BabkenGevorgyan\AppData\Roaming\Web2App\settings.json";
+        private readonly string _path = Application.UserAppDataPath + @"\settings.json";
 
         public IEnumerable<WebAppData> Get()
         {
             if (!File.Exists(_path))
             {
-                File.Create(_path);
+                var file = File.Create(_path);
+                file.Close();
             }
             var text = File.ReadAllText(_path);
             return JsonConvert.DeserializeObject<IEnumerable<WebAppData>>(text) ?? new List<WebAppData>();
