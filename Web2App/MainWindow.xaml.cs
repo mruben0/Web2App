@@ -21,18 +21,18 @@ namespace Web2App
     /// </summary>
     public partial class MainWindow : Window
     {
-        private WebAppDataService _dataSerice;
+        private WebAppDataService _dataService;
 
         public MainWindow()
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
-            _dataSerice = new WebAppDataService();
+            _dataService = new WebAppDataService();
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Apps.ItemsSource = _dataSerice.Get();
+            UpdateDataService();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -44,8 +44,8 @@ namespace Web2App
 
         private void AddToSettings_Click(object sender, RoutedEventArgs e)
         {
-            _dataSerice.Add(new WebAppData() { Url = new Uri(UriBox.Text) });
-            Apps.ItemsSource = _dataSerice.Get();
+            _dataService.Add(new WebAppData() { Url = new Uri(UriBox.Text) });
+            Apps.ItemsSource = _dataService.Get();
         }
 
         private void Launch_Desktop(object sender, RoutedEventArgs e)
@@ -60,6 +60,18 @@ namespace Web2App
             var uri = (sender as Button).Tag as Uri;
             var browserWindow = new Browser(uri,true);
             browserWindow.Show();
+        }
+
+        private void Delete_Url(object sender, RoutedEventArgs e)
+        {
+            var uri = (sender as Button).Tag as Uri;
+            _dataService.Remove(uri);
+            UpdateDataService();
+        }
+
+        private void UpdateDataService()
+        {
+            Apps.ItemsSource = _dataService.Get();
         }
     }
 }

@@ -20,7 +20,7 @@
                             <Button Tag="{Binding Url}"  Click="Launch_Desktop">Launch</Button>
                             <Button Tag="{Binding Url}"  Click="Launch_Mobile">Launch As Mobile</Button>
                             <Button>Create shortcut</Button>
-                            <Button>Delete</Button>
+                            <Button Tag="{Binding Url}" Click="Delete_Url">Delete</Button>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
