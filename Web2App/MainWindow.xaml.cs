@@ -23,12 +23,17 @@ namespace Web2App
     {
         private WebAppDataService _dataService;
 
+        List<string> ListItems = new List<string>();
         public MainWindow()
         {
             InitializeComponent();
+            ListItems.Add("Apple");
+            ListItems.Add("Potato");
+            ListItems.Add("Apricot");
             Loaded += MainWindow_Loaded;
             _dataService = new WebAppDataService();
         }
+
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -77,6 +82,15 @@ namespace Web2App
         private void Sample1_DialogHost_OnDialogClosing(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
         {
 
+        }
+
+        private void DialogButton_Click(object sender, RoutedEventArgs e)
+        {
+            var isAccepted = (sender as Button).Tag.ToString() == "true";
+            if (isAccepted)
+            {
+                ListBox.Items.Add("Vzgo");
+            }
         }
     }
 }
