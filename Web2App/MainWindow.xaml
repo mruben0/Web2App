@@ -6,73 +6,76 @@
         xmlns:local="clr-namespace:Web2App"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:WPF="clr-namespace:Microsoft.Toolkit.Wpf.UI.Controls;assembly=Microsoft.Toolkit.Wpf.UI.Controls.WebView"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         DataContext="{Binding Main, Source={StaticResource Locator}}" 
         Title="{Binding Title}"    Height="450" Width="800">
-    <StackPanel>
-        <materialDesign:DialogHost DialogClosing="Sample1_DialogHost_OnDialogClosing" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <materialDesign:DialogHost.DialogContent>
-                <StackPanel Margin="16">
-                    <TextBlock>Add a new fruit.</TextBlock>
-                    <TextBox Margin="0 8 0 0" HorizontalAlignment="Stretch" x:Name="FruitTextBox" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
-                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+    <materialDesign:DialogHost Height="410" Width="780" Name="Dialog" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="DialogClosing">
+                <i:InvokeCommandAction Command="{Binding Path=AddCommand, Mode=OneWay}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+        <materialDesign:DialogHost.DialogContent >
+            <StackPanel Margin="16">
+                <TextBlock>Add a new Website.</TextBlock>
+                <TextBox Margin="0 8 0 0" HorizontalAlignment="Stretch" Text="{Binding NewUri, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                    <Button Style="{StaticResource MaterialDesignFlatButton}"
                                         Tag="true"
                                         IsDefault="True"
                                         Margin="0 8 8 0"
-                                        Click="DialogButton_Click"
-                                        Command="materialDesign:DialogHost.CloseDialogCommand">                        
-                            ACCEPT
-                        </Button>
-                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                        Command="materialDesign:DialogHost.CloseDialogCommand">
+                       
+                        ACCEPT
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFlatButton}"
                                         Tag="false"                           
                                         IsCancel="True"
-                                        Click="DialogButton_Click"
                                         Margin="0 8 8 0"
-                                        Command="materialDesign:DialogHost.CloseDialogCommand">                        
-                            CANCEL
-                        </Button>
-                    </StackPanel>
+                                        Command="materialDesign:DialogHost.CloseDialogCommand">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding Path=CancelCommand, Mode=OneWay}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        CANCEL
+                    </Button>
                 </StackPanel>
-            </materialDesign:DialogHost.DialogContent>
-            <Border BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+            </StackPanel>
+        </materialDesign:DialogHost.DialogContent>
+        <Border BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                             MinWidth="256" MinHeight="256" ClipToBounds="True">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <ListBox x:Name="ListBox" SelectedItem="{Binding Ittt}" ItemsSource="{Binding ListItems}">
-                    </ListBox>
-                    <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="1" Effect="{DynamicResource MaterialDesignShadowDepth5}">
-                        <TextBlock Margin="16">Fruit Bowl</TextBlock>
-                    </materialDesign:ColorZone>
-                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <ListBox x:Name="ListBox" SelectedItem="{Binding SelectedUri}" ItemsSource="{Binding WebSites}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Url}"></TextBlock>
+                                <Button Margin="8 0" CommandParameter="{Binding Url}" Command="{Binding DataContext.BrowseCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">Launch</Button>
+                                <Button Margin="8 0" CommandParameter="{Binding Url}" Command="{Binding DataContext.BrowseAsMobileCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">Launch As Mobile</Button>
+                                <Button Margin="8 0">Create shortcut</Button>
+                                <Button Margin="8 0" CommandParameter="{Binding Url}"  Command="{Binding DataContext.RemoveUrlCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">Delete</Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="1" Effect="{DynamicResource MaterialDesignShadowDepth5}">
+                    <TextBlock Margin="16">WebApp list</TextBlock>
+                </materialDesign:ColorZone>
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
                                     Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
                                     VerticalAlignment="Bottom" HorizontalAlignment="Right" 
                                     Grid.Row="0" Margin="0 0 28 -20">
-                        <materialDesign:PackIcon Kind="Plus" Height="22" Width="22"/>
-                    </Button>
-                </Grid>
-            </Border>
-        </materialDesign:DialogHost>
-        <TextBox x:Name="UriBox"></TextBox>
-        <Button Click="Button_Click">Create</Button>
-        <Button Click="AddToSettings_Click">Add to settings</Button>
-        <StackPanel>
-            <ListView x:Name="Apps">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Url}"></TextBlock>
-                            <Button Tag="{Binding Url}"  Click="Launch_Desktop">Launch</Button>
-                            <Button Tag="{Binding Url}"  Click="Launch_Mobile">Launch As Mobile</Button>
-                            <Button>Create shortcut</Button>
-                            <Button Tag="{Binding Url}" Click="Delete_Url">Delete</Button>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackPanel>
-    </StackPanel>
+                    <materialDesign:PackIcon Kind="Plus" Height="22" Width="22"/>
+                </Button>
+            </Grid>
+        </Border>
+    </materialDesign:DialogHost>
 </Window>
+
+    

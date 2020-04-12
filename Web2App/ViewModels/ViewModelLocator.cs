@@ -1,11 +1,5 @@
 ﻿using CommonServiceLocator;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Web2App.Framework.ViewModels
 {
@@ -15,6 +9,7 @@ namespace Web2App.Framework.ViewModels
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
+            SimpleIoc.Default.Register<WebAppDataService, WebAppDataService>();
             SimpleIoc.Default.Register<MainViewModel>();
         }
 
