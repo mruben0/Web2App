@@ -73,5 +73,10 @@ namespace Web2App
         {
             Apps.ItemsSource = _dataService.Get();
         }
+
+        private void Sample1_DialogHost_OnDialogClosing(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
+        {
+
+        }
     }
 }
